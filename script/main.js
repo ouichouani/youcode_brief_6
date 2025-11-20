@@ -14,7 +14,7 @@ function DISPLAY_TOST(color, message) {
 }
 
 function FITCH_WORKERS(array) {
-    array.push(JSON.parse(localStorage.getItem('workers')));
+    array = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : [] ;
 }
 
 function CHANGE_LOCAL_STORAGE(array) {
@@ -147,7 +147,6 @@ function VALIDATION_EXPERIENCES_DATA() {
 }
 
 function CREATE_WORKER(data) {
-
     console.log(data);
 }
 
