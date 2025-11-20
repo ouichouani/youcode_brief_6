@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style/style.css">
+    <title>area</title>
+</head>
+
+<body class="flex justify-center">
+
+    <aside
+        class="static md:absolute lg:static h-screen lg:h-screen md:h-fit w-[25vw] min-w-[200px] lg:w-[25vw] md:w-screen  bg-green-100 flex flex-col items-center pb-[10px] md:pb-0 lg:pb-[10px] bottom-0 overflow-auto md:overflow-visible lg:overflow-auto  ">
+
+
+        <div class="sticky top-0 z-10 bg-white w-full p-[10px] md:hidden lg:block">
+            <p class="text-[3vw] w-max text-center">workers list</p>
+        </div>
+
+        <section
+            class="flex flex-col lg:flex-col md:flex-row gap-[10px] p-[10px] w-full md:w-screen lg:w-full shrink-0 h-fit overflow-auto">
+
+            <div draggable="true"
+                class="worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-red-200 rounded-[5px] p-[10px] ">
+                <img src="./img/plan.jpg" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">abdelhadi</p>
+                    <p class="post md:text-start text-center">afrokh</p>
+                </div>
+                <button class="absolute sm:static md:absolute right-[15px]">&times;</button>
+            </div>
+
+        </section>
+
+        <button
+            class="bg-red-200 w-fit p-[10px] rounded-[5px] static lg:static md:absolute right-[10px] top-0 translate-y-[0] md:translate-y-[-100%] lg:translate-y-[0] z-1 ">add
+            worker</button>
+
+    </aside>
+
+    <section
+        class="relative bg-[url('./img/plan.jpg')] bg-contain bg-no-repeat bg-center h-fit aspect-[1280/720] w-[80vw] md:w-full lg:w-[80vw] ">
+
+        <div id="salles" class="w-full aspect-[1280/720] grid p-[1%] ">
+
+            <section id="salle_conference" class="flex flex-col items-center">
+                salle_conference
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+
+            <section id="Reception" class="flex flex-col items-center">
+                Reception
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+
+            <section id="salle_serveurs" class="flex flex-col items-center">
+                salle_serveurs
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+
+            <section id="salle_securite" class="flex flex-col items-center">
+                salle_securite
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+
+            <section id="salle_personnel" class="flex flex-col items-center">
+                salle_personnel
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+
+            <section id="salle_archives" class="flex flex-col items-center">
+                salle_archives
+                <section id="worker_container"></section>
+                <button
+                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+            </section>
+        </div>
+
+
+    </section>
+
+    <form action=""
+        class="w-[70vw]  max-w-[500px] max-h-[90vh] overflow-auto bg-red-300 absolute flex flex-col gap-[10px] top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] z-12 p-[10px] pt-[30px] rounded-[10px]">
+
+        <span class="absolute top-[0px] right-[5px]">&times;</span>
+
+        <label class="flex flex-col">
+            <span>name</span>
+            <input type="text" name="name" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+        </label>
+        
+        <label class="flex flex-col">
+            <span>specialite</span>
+
+            <select name="specialite" class="w-[85%] bg-blue-200 rounded-full h-[30px]">
+                <option value="Techniciens_IT"> Techniciens IT</option>
+                <option value="sécurité">sécurité</option>
+                <option value="Réceptionnistes">Réceptionnistes</option>
+                <option value="autre">autre</option>
+            </select>
+        </label>
+
+        <label class="flex flex-col">
+            <span>image url</span>
+            <input type="url" name="image" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+        </label>
+
+        <label class="flex flex-col">
+            <span>email</span>
+            <input type="email" name="email" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+        </label>
+
+        <label class="flex flex-col">
+            <span>phone number</span>
+            <input type="tel" name="phone" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+        </label>
+
+        <div id="Expériences_container"  class="flex flex-col gap-[10px]" >
+
+            <div  class="flex py-[10px]">
+                <div class="flex flex-col gap-[10px] grow">
+                    <label class="flex flex-col">
+                        <span>Expériences</span>
+                        <input type="text" name="Expériences"  class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                    </label>
+
+                    <label class="flex flex-col">
+                        <span>start date</span>
+                        <input type="date" name="start_date"  class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                    </label>
+
+                    <label class="flex flex-col">
+                        <span>end date</span>
+                        <input type="date" name="end_date"  class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                    </label>
+                </div>
+                
+                <div class="w-[15%] flex flex-col justify-center gap-[20px] items-center ">
+                    <button
+                        class="flex items-center justify-center bg-green-500 w-[30px] h-[30px] rounded-full">+</button>
+                    <button
+                        class="flex items-center justify-center bg-green-500 w-[30px] h-[30px] rounded-full">&times;</button>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="bg-green-500" >create</button>
+
+    </form>
+
+    <div id="layer" class="fixed top-0 left-0 w-screen h-screen filted z-10"></div>
+
+    <script src="script/main.js"></script>
+
+</body>
+
+
+</html>

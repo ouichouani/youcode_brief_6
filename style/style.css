@@ -1,0 +1,49 @@
+*{
+    border : none ;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar{
+    width: 5px;
+    height: 10px;
+    background: red;
+    /* display: none; */
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: rgb(4, 65, 199);
+    border-radius: 2px;
+}
+
+#layer{
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5);
+}
+#salles{
+    grid-template-rows: 34% 1fr 1fr;
+    grid-template-columns: 38% 17% 21.5% 22.5%;
+    grid-template-areas: 'salle_conference . salle_serveurs salle_securite''Reception . . .''Reception . salle_personnel salle_archives';
+}
+
+#salle_conference{
+    grid-area: salle_conference ;
+}
+#Reception{
+    grid-area: Reception ;
+}
+#salle_serveurs{
+    grid-area: salle_serveurs ;
+}
+#worker_container{
+    grid-area: worker_container ;
+}
+#salle_securite{
+    grid-area: salle_securite ;
+}
+#salle_personnel{
+    grid-area: salle_personnel ;
+}
+#salle_archives{
+    grid-area: salle_archives ;
+}
