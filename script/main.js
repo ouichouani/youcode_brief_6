@@ -111,25 +111,34 @@ function VALIDATION_EXPERIENCES_DATA() {
             if (!(FORM['Expériences'][i].value.trim())) {
                 return INVALID_DATA('Experience can not be empty', FORM['Expériences'][i]);
             }
+
+            if (!(FORM['exp_role'][i].value.trim())) {
+                return INVALID_DATA('role can not be empty', FORM['exp_role'][i]);
+            }
             if (fromDate > toDate) {
                 return INVALID_DATA('date is incorrect logicly', FORM['from'][i]);
             }
             //IF THERE IS NO EXEPTION , SAVE THE OBJECT
-            Experiences.push({ experience: FORM['Expériences'][i].value, from: fromDate, to: toDate })
+            Experiences.push({ experience: FORM['Expériences'][i].value, role: FORM['exp_role'][i].value, from: fromDate, to: toDate })
         }
 
     } else {
-        const fromDate = new Date(FORM['from'][i].value);
-        const toDate = new Date(FORM['to'][i].value);
+        const fromDate = new Date(FORM['from'].value);
+        const toDate = new Date(FORM['to'].value);
         if (!(FORM['Expériences'].value.trim())) {
             return INVALID_DATA('Experience can not be empty', FORM['Expériences']);
         }
+
+        if (!(FORM['exp_role'].value.trim())) {
+            return INVALID_DATA('role can not be empty', FORM['exp_role']);
+        }
+
         if (fromDate > toDate) {
             return INVALID_DATA('date is incorrect logicly', FORM['from']);
         }
 
         //IF THERE IS NO EXEPTION , SAVE THE OBJECT
-        Experiences.push({ experience: FORM['Expériences'][i].value, from: fromDate, to: toDate })
+        Experiences.push({ experience: FORM['Expériences'].value , role: FORM['exp_role'].value, from: fromDate, to: toDate })
     }
 
 
@@ -137,9 +146,9 @@ function VALIDATION_EXPERIENCES_DATA() {
     return Experiences;
 }
 
-function CREATE_WORKER(data){
-    
-    console.log(data) ;
+function CREATE_WORKER(data) {
+
+    console.log(data);
 }
 
 FORM.addEventListener('submit', (e) => HANDLESUBMIT(e));
