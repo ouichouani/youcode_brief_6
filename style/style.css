@@ -8,7 +8,6 @@
     width: 5px;
     height: 10px;
     background: red;
-    /* display: none; */
 }
 
 ::-webkit-scrollbar-thumb{
@@ -46,4 +45,23 @@
 }
 #salle_archives{
     grid-area: salle_archives ;
+}
+
+
+.area_worker{
+    width: 4vw ;
+    margin-bottom: 2%;
+    padding: 0;
+    background: transparent;
+
+    min-width: unset;
+    aspect-ratio: 1/1;
+    
+    p{
+        display: none;
+    }
+    img{
+        flex-shrink: 0;
+        width: 100%;
+    }
 }
