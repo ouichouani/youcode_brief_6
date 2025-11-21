@@ -1,32 +1,92 @@
-
+//style area_worker in css file
 
 const LAYER = document.getElementById('layer');
 const FORM = document.querySelector('form');
+const WORKERS_LIST = document.querySelector('#workers_list');
+const SALLES = document.getElementById('salles');
+const ZONE_WORKER_LIST = document.querySelector('#zone_workers_list');
 
-let DATA = [];
-FITCH_WORKERS(DATA);
+const ROOLES = {
+    Reception: { employees: ['Réceptionnistes', 'Manager', 'Nettoyage'], limits: 5 },
+    salle_serveurs: { employees: ['Techniciens_IT', 'Manager', 'Nettoyage'], limits: 5 },
+    salle_securite: { employees: ['sécurité', 'Manager', 'Nettoyage'], limits: 3 },
+    salle_conference: { employees: ['Techniciens_IT', 'sécurité', 'Réceptionnistes', 'Manager', 'Nettoyage', 'autre'], limits: 6 },
+    salle_personnel: { employees: ['Techniciens_IT', 'sécurité', 'Réceptionnistes', 'Manager', 'Nettoyage', 'autre'], limits: 4 },
+    salle_archives: { employees: ['Techniciens_IT', 'sécurité', 'Réceptionnistes', 'Manager'], limits: 2 },
+}
 
+//FETCH DATA FROM LOCAL STORAGE
+let DATA = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : [];
 
+FORM.addEventListener('submit', (e) => HANDLESUBMIT(e));
+LAYER.addEventListener('click', DISPLAY_FORM);
+document.getElementById('display_form').addEventListener('click', DISPLAY_FORM);
+document.getElementById('close_form').addEventListener('click', DISPLAY_FORM);
+document.getElementById('close_zone_workers_list').addEventListener('click', () => document.getElementById('close_zone_workers_list').parentElement.classList.toggle('hidden'));
+
+//ADD EVENT LISTINER TO EACH BUTTON IN AREA
+SALLES.querySelectorAll('section button').forEach(item => {
+    item.addEventListener('click', () => {
+        document.getElementById('close_zone_workers_list').parentElement.classList.remove('hidden');
+        SHOW_SALL_WORKERS(item.parentElement);
+    })
+});
+
+//SHOW A LIST THAT SHOW ALL DISPO WORKERS FOR A SPECIFIC SALL
+function SHOW_SALL_WORKERS(sall) {
+
+    ZONE_WORKER_LIST.innerHTML = '';
+    const FILTRED_ARRAY = Array.from(WORKERS_LIST.querySelectorAll('div[id]')).filter((item) => ROOLES[sall.id].employees.includes(item.querySelector('.post').textContent));
+
+    //FILL THE ZONE_WORKER_LIST
+    FILTRED_ARRAY.forEach(item => {
+        const CLONE = item.cloneNode(true)
+        ZONE_WORKER_LIST.appendChild(CLONE);
+    });
+
+    Array.from(ZONE_WORKER_LIST.children).forEach(item => {
+        item.addEventListener('click', () => {
+            if (sall.querySelector('.worker_container').childElementCount < ROOLES[sall.id].limits) {
+                ADD_WORKER_TO_AREA(sall , item)
+            }
+        });
+    })
+
+}
+
+function ADD_WORKER_TO_AREA(sall , worker){
+
+    //ADD WORKER TO AREA
+    worker.classList.add('area_worker')
+    sall.querySelector('.worker_container').appendChild(worker);
+
+    //REMOVE WORKER FROM WORKER LIST
+    DATA = DATA.filter(item=> DATA.indexOf(item) != worker.id) ;
+    DISPLAY_WORKERS(DATA) ;
+
+}
+
+function DISPLAY_FORM() {
+    FORM.classList.toggle('hidden');
+    LAYER.classList.toggle('hidden');
+}
 
 function DISPLAY_TOST(color, message) {
     console.log('color : ', color, 'messahe : ', message)
-    return;
-}
-
-function FITCH_WORKERS(array) {
-    array = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : [] ;
 }
 
 function CHANGE_LOCAL_STORAGE(array) {
     localStorage.setItem('workers', JSON.stringify(array))
 }
 
+//INDICATE THAT FORM DATA IS INVALIDE
 function INVALID_DATA(message, invalid_input) {
     invalid_input.style.border = '3px solid red'
     DISPLAY_TOST('red', message);
     return;
 }
 
+//INDICATE THAT FORM DATA IS VALID
 function SUBMIT_VALID_DATA(data) {
 
 
@@ -53,6 +113,7 @@ function HANDLESUBMIT(e) {
     CHANGE_LOCAL_STORAGE(DATA)
 }
 
+//VALIDATE SUBMITED DATA
 function VALIDATION_FROM_DATA() {
     const { name, specialite, image, email, phone } = FORM
 
@@ -98,6 +159,7 @@ function VALIDATION_FROM_DATA() {
 
 }
 
+//VALIDATE SUBMITED EXPERIENCE DATA
 function VALIDATION_EXPERIENCES_DATA() {
 
     const Experiences = [];
@@ -138,7 +200,7 @@ function VALIDATION_EXPERIENCES_DATA() {
         }
 
         //IF THERE IS NO EXEPTION , SAVE THE OBJECT
-        Experiences.push({ experience: FORM['Expériences'].value , role: FORM['exp_role'].value, from: fromDate, to: toDate })
+        Experiences.push({ experience: FORM['Expériences'].value, role: FORM['exp_role'].value, from: fromDate, to: toDate })
     }
 
 
@@ -147,7 +209,71 @@ function VALIDATION_EXPERIENCES_DATA() {
 }
 
 function CREATE_WORKER(data) {
-    console.log(data);
+
+    const WORKER = document.createElement('div');
+    WORKER.setAttribute('draggable', true);
+
+    // IF THERE IS NO ID IN DATA , SOW WORKER IS THE FIRST ONE
+    // ID WILL BE THE INDEX OF THE WORKER INSIDE THE ARRAY
+
+    const id = WORKERS_LIST.querySelector('div:last-child').getAttribute('id');
+    WORKER.setAttribute('id', id ? +id + 1 : 0);
+    console.log(DATA);
+
+    WORKER.className = 'worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-red-200 rounded-[5px] p-[10px]'
+    WORKER.innerHTML = `
+                <img src="${data.image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">${data.name}</p>
+                    <p class="post md:text-start text-center">${data.specialite}</p>
+                </div>
+                <button class="absolute sm:static md:absolute right-[15px]">&times;</button>
+                    ` ;
+
+    WORKERS_LIST.appendChild(WORKER);
+
+    DISPLAY_TOST('green', 'worker addes with success');
+    WORKER.addEventListener('click', () => SHOW_WORKER_DATA(data));
+
 }
 
-FORM.addEventListener('submit', (e) => HANDLESUBMIT(e));
+function DISPLAY_WORKERS(array) {
+
+    WORKERS_LIST.innerHTML = '';
+
+    for (let i = 0; i < array.length; i++) {
+        const WORKER = document.createElement('div');
+        WORKER.setAttribute('draggable', true);
+
+        // IF THERE IS NO ID IN array , SOW WORKER IS THE FIRST ONE
+        // ID WILL BE THE INDEX OF THE WORKER INSIDE THE ARRAY
+        let id = 0
+        if (document.querySelector('#workers_list > div:last-child')) {
+            id = + document.querySelector('#workers_list > div:last-child').getAttribute('id') + 1
+        }
+        WORKER.setAttribute('id', id);
+        WORKER.className = 'worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-red-200 rounded-[5px] p-[10px]'
+        WORKER.innerHTML = `
+                <img src="${array[i].image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">${array[i].name}</p>
+                    <p class="post md:text-start text-center">${array[i].specialite}</p>
+                </div>
+                <button class="hidden absolute sm:static md:absolute right-[15px]">&times;</button>
+
+                    ` ;
+
+        WORKERS_LIST.appendChild(WORKER);
+
+    }
+
+}
+
+function SHOW_WORKER_DATA(data) {
+    return;
+}
+
+
+
+
+DISPLAY_WORKERS(DATA)
