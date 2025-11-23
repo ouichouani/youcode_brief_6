@@ -85,11 +85,12 @@
         <label class="flex flex-col">
             <span>specialite</span>
 
-            <select name="specialite" class="w-[85%] bg-blue-200 rounded-full h-[30px]">
+            <select id="role" name="specialite" class="w-[85%] bg-blue-200 rounded-full h-[30px]">
                 <option value="Techniciens_IT"> Techniciens IT</option>
                 <option value="sécurité">sécurité</option>
                 <option value="Réceptionnistes">Réceptionnistes</option>
-                <option value="autre">autre</option>
+                <option value="Manager">Manager</option>
+                <option value="Nettoyage">Nettoyage</option>
             </select>
 
         </label>
@@ -152,6 +153,10 @@
         <span id="close_zone_workers_list"  class="absolute top-0 right-[10px] cursor-pointer " >&times;</span>
         <div id='zone_workers_list' class="flex flex-col gap-[10px]">
         </div>
+    </div>
+
+    <div id="toast_container" class="absolute  w-[200px] h-screen top-0 right-0 pr-[5px] pt-[10px] z-1000 flex flex-col gap-[5px] pointer-events-none" >
+
     </div>
 
     <div id="layer" class="hidden fixed top-0 left-0 w-screen h-screen filted z-10"></div>
