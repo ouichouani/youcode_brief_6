@@ -9,20 +9,21 @@
     <title>area</title>
 </head>
 
-<body class="flex justify-center">
+<body class=" bg- flex justify-center">
 
     <aside
-        class="static md:absolute lg:static h-screen lg:h-screen md:h-fit w-[25vw] min-w-[200px] lg:w-[25vw] md:w-screen  bg-green-100 flex flex-col items-center pb-[10px] md:pb-0 lg:pb-[10px] bottom-0 overflow-auto md:overflow-visible lg:overflow-auto  ">
-        <div class="sticky top-0 z-10 bg-white w-full p-[10px] md:hidden lg:block">
-            <p class="text-[3vw] w-max text-center">workers list</p>
+        class="static md:absolute lg:static h-screen lg:h-screen md:h-fit w-[27vw] min-w-[200px] lg:w-[25vw] md:w-screen bg-[#E8FFD7] flex flex-col items-center pb-[10px] md:pb-0 lg:pb-[10px] bottom-0 overflow-auto md:overflow-visible lg:overflow-auto  ">
+        <div
+            class="sticky top-0 z-10 w-full p-[10px] md:hidden lg:block bg-[#E8FFD7] flex items-center justify-center ">
+            <p class="text-[3vw] text-[#3E5F44] font-black w-max text-center">workers list</p>
         </div>
 
         <section id="workers_list"
-            class="flex flex-col lg:flex-col md:flex-row gap-[10px] p-[10px] w-full md:w-screen lg:w-full shrink-0 h-fit overflow-auto">
+            class="flex flex-col lg:flex-col md:flex-row gap-[10px] p-[10px] w-full md:w-screen lg:w-full shrink-0 h-fit overflow-auto overflow-x-hidden md:overflow-x-auto ">
         </section>
 
         <button id="display_form"
-            class="bg-red-200 w-fit p-[10px] rounded-[5px] static lg:static md:absolute right-[10px] top-0 translate-y-[0] md:translate-y-[-100%] lg:translate-y-[0] z-1 ">add
+            class="bg-[#3E5F44] text-white w-fit p-[10px] rounded-[5px] static lg:static md:absolute right-[10px] top-0 translate-y-[0] md:translate-y-[-100%] lg:translate-y-[0] z-1 ">add
             worker</button>
     </aside>
 
@@ -30,128 +31,138 @@
         class="relative bg-[url('./img/plan.jpg')] bg-contain bg-no-repeat bg-center h-fit aspect-[1280/720] w-[80vw] md:w-full lg:w-[80vw] ">
         <div id="salles" class="w-full aspect-[1280/720] grid p-[1%] ">
             <section id="salle_conference" class="flex flex-col items-center ">
-                salle_conference
+                <span>salle_conference</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
-                <button class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                <button
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
 
             <section id="Reception" class="flex flex-col items-center">
-                Reception
+                <span>Reception</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
                 <button
-                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
 
             <section id="salle_serveurs" class="flex flex-col items-center">
-                salle_serveurs
+                <span>salle_serveurs</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
                 <button
-                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
 
             <section id="salle_securite" class="flex flex-col items-center">
-                salle_securite
+                <span>salle_securite</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
                 <button
-                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
 
             <section id="salle_personnel" class="flex flex-col items-center">
-                salle_personnel
+                <span>salle_personnel</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
                 <button
-                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
 
             <section id="salle_archives" class="flex flex-col items-center">
-                salle_archives
+                <span>salle_archives</span>
                 <section class="worker_container flex w-[90%] flex-wrap justify-center gap-[2%]"></section>
                 <button
-                    class="bg-blue-500 rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
+                    class="bg-[#3E5F44] text-white rounded-full opacity-[1] w-[25px] font-mono aspect-1/1 flex justify-center items-center ">+</button>
             </section>
         </div>
     </section>
 
     <form
-        class="hidden w-[70vw] max-w-[500px] max-h-[90vh] overflow-auto bg-red-300 absolute flex flex-col gap-[10px] top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] z-12 p-[10px] pt-[30px] rounded-[10px]">
+        class="hidden w-[70vw] max-w-[500px] max-h-[90vh] overflow-auto bg-[#5E936C] absolute flex flex-col gap-[10px] top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] z-12 p-[10px] pt-[30px] rounded-[10px]">
+        <span id="close_form"
+            class="sticky top-0 self-end cursor-pointer w-[30px] h-[30px] bg-red-500 rounded-[100000px] z-2 flex items-center justify-center text-white flex-shrink-0 ">&times;</span>
 
-        <span id="close_form" class="absolute top-[0px] right-[5px] cursor-pointer">&times;</span>
 
         <label class="flex flex-col">
-            <span>name</span>
-            <input type="text" required name="name" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+            <span class="mb-[5px] text-[#2a402e] font-bold">name</span>
+            <input type="text" required name="name" class="bg-white rounded-[10px] h-[30px] p-[10px]" placeholder="full name">
         </label>
 
         <label class="flex flex-col">
-            <span>specialite</span>
+            <span class="mb-[5px] text-[#2a402e] font-bold">specialite</span>
 
-            <select name="specialite" class="w-[85%] bg-blue-200 rounded-full h-[30px]">
+            <select id="role" name="specialite" class="bg-white rounded-[10px] h-[40px] p-[10px]" >
                 <option value="Techniciens_IT"> Techniciens IT</option>
                 <option value="sécurité">sécurité</option>
                 <option value="Réceptionnistes">Réceptionnistes</option>
-                <option value="autre">autre</option>
+                <option value="Manager">Manager</option>
+                <option value="Nettoyage">Nettoyage</option>
             </select>
 
         </label>
 
-        <label class="flex flex-col">
-            <span>image url</span>
-            <input type="url" name="image" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+        <label class="flex gap-[10px] items-center">
+            <img src="./img/default.jpg" alt="" class="h-[50px] w-[50px] object-cover rounded-[1000px] " >
+            <input type="url" name="image" class=" bg-white rounded-[10px] h-[30px] p-[10px] w-full " placeholder= "image url" >
         </label>
 
         <label class="flex flex-col">
-            <span>email</span>
-            <input type="email" name="email" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+            <span class="mb-[5px] text-[#2a402e] font-bold">email</span>
+            <input type="email" name="email" class=" bg-white rounded-[10px] h-[30px] p-[10px] " placeholder="email">
         </label>
 
         <label class="flex flex-col">
-            <span>phone number</span>
-            <input type="tel" name="phone" class="w-[85%] bg-blue-200 rounded-full h-[30px] p-[10px] ">
+            <span class="mb-[5px] text-[#2a402e] font-bold">phone number</span>
+            <input type="tel" name="phone" class=" bg-white rounded-[10px] h-[30px] p-[10px] " placeholder="0700000000" >
         </label>
 
         <div id="Expériences_container" class="flex flex-col gap-[10px]">
 
-            <div class="flex py-[10px]">
-                <div class="flex flex-col gap-[10px] grow">
+            <div class="Experience flex flex-col py-[10px]">
+                <div class="flex flex-col gap-[10px] grow rounded-[10px] p-[5px] ">
                     <label class="flex flex-col">
-                        <span>Expériences</span>
-                        <input type="text" name="Expériences" class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                        <span class="mb-[5px] text-[#2a402e] font-bold">Expériences</span>
+                        <input type="text" name="Expériences" class="bg-white rounded-[10px] h-[30px] p-[10px]" placeholder="Expériences">
                     </label>
 
                     <label class="flex flex-col">
-                        <span>role</span>
-                        <input type="text" required name="exp_role" class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                        <span class="mb-[5px] text-[#2a402e] font-bold">role</span>
+                        <input type="text" required name="exp_role" class="bg-white rounded-[10px] h-[30px] p-[10px] " placeholder="role" >
                     </label>
 
                     <label class="flex flex-col">
-                        <span>from</span>
-                        <input type="date" required name="from" class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                        <span class="mb-[5px] text-[#2a402e] font-bold">from</span>
+                        <input type="date" required name="from" class="bg-white rounded-[10px] h-[30px] p-[10px] " placeholder="Experience start date" >
                     </label>
 
                     <label class="flex flex-col">
-                        <span>to</span>
-                        <input type="date" required name="to" class="bg-blue-200 rounded-full h-[30px] p-[10px] ">
+                        <span class="mb-[5px] text-[#2a402e] font-bold">to</span>
+                        <input type="date" required name="to" class="bg-white rounded-[10px] h-[30px] p-[10px] " placeholder="Experience end date" >
                     </label>
                 </div>
 
-                <div class="w-[15%] flex flex-col justify-center gap-[20px] items-center ">
-                    <button
-                        class="flex items-center justify-center bg-green-500 w-[30px] h-[30px] rounded-full">+</button>
-                    <button
-                        class="flex items-center justify-center bg-green-500 w-[30px] h-[30px] rounded-full">&times;</button>
+                <div class="flex justify-center gap-[10px] items-center h-[40px]">
+                    <button type="button"
+                        class="add_button flex items-center justify-center bg-[#3E5F44] w-[30px] h-[30px] rounded-full text-white font-mono  ">+</button>
+                    <button type="button"
+                        class="hidden delete_button flex items-center justify-center bg-[#3E5F44] w-[30px] h-[30px] rounded-full text-white font-mono ">&times;</button>
                 </div>
             </div>
 
         </div>
 
-        <button type="submit" class="bg-green-500">create</button>
+        <button type="submit" class="bg-[#E8FFD7] rounded-[10px] text-[#2a402e] font-bold p-[10px] ">create</button>
 
     </form>
 
-    <div class="hidden w-[70vw] max-w-[500px] max-h-[90vh] overflow-auto bg-red-300 absolute flex flex-col gap-[10px] top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] z-12 p-[10px] pt-[30px] rounded-[10px]">
-        <span id="close_zone_workers_list"  class="absolute top-0 right-[10px] cursor-pointer " >&times;</span>
-        <div id='zone_workers_list' class="flex flex-col gap-[10px]">
+    <div
+        class="hidden w-[70vw] max-w-[500px] max-h-[90vh] absolute flex flex-col top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] z-12 p-[15px] ">
+        <span id="close_zone_workers_list"
+            class="absolute top-[0px] right-[0px] cursor-pointer w-[30px] h-[30px] bg-red-500 rounded-[100000px] z-2 flex items-center justify-center text-white ">&times;</span>
+        <div id='zone_workers_list' class="flex flex-col gap-[5px] bg-[#93DA97] p-[5px] overflow-auto rounded-[5px] ">
         </div>
+    </div>
+
+    <div id="toast_container"
+        class="absolute  w-[200px] h-screen top-0 right-0 pr-[5px] pt-[10px] z-1000 flex flex-col gap-[5px] pointer-events-none">
+
     </div>
 
     <div id="layer" class="hidden fixed top-0 left-0 w-screen h-screen filted z-10"></div>

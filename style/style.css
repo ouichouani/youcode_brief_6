@@ -7,11 +7,11 @@
 ::-webkit-scrollbar{
     width: 5px;
     height: 10px;
-    background: red;
+    background-color: #E8FFD7;
 }
 
 ::-webkit-scrollbar-thumb{
-    background-color: rgb(4, 65, 199);
+    background: #3E5F44;
     border-radius: 2px;
 }
 
@@ -34,9 +34,9 @@
 #salle_serveurs{
     grid-area: salle_serveurs ;
 }
-#worker_container{
+/* #worker_container{
     grid-area: worker_container ;
-}
+} */
 #salle_securite{
     grid-area: salle_securite ;
 }
@@ -45,6 +45,13 @@
 }
 #salle_archives{
     grid-area: salle_archives ;
+}
+
+#salle_securite:has(.worker_container:empty),
+#Reception:has(.worker_container:empty) ,
+#salle_archives:has(.worker_container:empty) ,
+#salle_serveurs:has(.worker_container:empty){
+    background-color: rgba(255, 0, 0, 0.25);
 }
 
 
@@ -65,3 +72,16 @@
         width: 100%;
     }
 }
+
+    /* button{
+        display: block;
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        aspect-ratio: 1/1;
+        width: 30px;
+        height: 30px;
+        border-radius: 1000px;
+        background: red;
+        font-family: monospace;
+    } */

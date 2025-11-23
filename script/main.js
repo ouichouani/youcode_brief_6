@@ -1,6 +1,10 @@
-//style area_worker in css file
-//change to push dev branch
+//SHOW_PROFAILE
 
+
+
+//FETCH DATA FROM LOCAL STORAGE
+const BASE_DATA = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : { workers: [], Reception: [], salle_conference: [], salle_serveurs: [], salle_securite: [], salle_personnel: [], salle_archives: [] };
+const TOAST_CONTAINER = document.getElementById('toast_container');
 const LAYER = document.getElementById('layer');
 const FORM = document.querySelector('form');
 const WORKERS_LIST = document.querySelector('#workers_list');
@@ -16,88 +20,177 @@ const ROOLES = {
     salle_archives: { employees: ['Techniciens_IT', 'sécurité', 'Réceptionnistes', 'Manager'], limits: 2 },
 }
 
-//FETCH DATA FROM LOCAL STORAGE
-let DATA = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : [];
+function EVENT_LISTINERS() {
 
-FORM.addEventListener('submit', (e) => HANDLESUBMIT(e));
-LAYER.addEventListener('click', DISPLAY_FORM);
-document.getElementById('display_form').addEventListener('click', DISPLAY_FORM);
-document.getElementById('close_form').addEventListener('click', DISPLAY_FORM);
-document.getElementById('close_zone_workers_list').addEventListener('click', () => document.getElementById('close_zone_workers_list').parentElement.classList.toggle('hidden'));
+    document.getElementById('display_form').addEventListener('click', () => DISPLAY_ITEM(FORM));
+    document.getElementById('close_form').addEventListener('click', () => DISPLAY_ITEM(FORM));
+    document.getElementById('close_zone_workers_list').addEventListener('click', () => DISPLAY_ITEM(ZONE_WORKER_LIST.parentElement));
 
-//ADD EVENT LISTINER TO EACH BUTTON IN AREA
-SALLES.querySelectorAll('section button').forEach(item => {
-    item.addEventListener('click', () => {
-        document.getElementById('close_zone_workers_list').parentElement.classList.remove('hidden');
-        SHOW_SALL_WORKERS(item.parentElement);
+    FORM.querySelector('input[name="image"]').addEventListener('change' , (e)=>{
+        FORM.querySelector('img').src =e.target.value 
     })
-});
+    FORM.addEventListener('submit', (e) => HANDLESUBMIT(e));
+    console.log(FORM.querySelector('#Expériences_container button.add_button'))
+    FORM.querySelector('#Expériences_container button.add_button').addEventListener('click', (e) => ADD_EXPERIENCE_INPUTS_EVENT(e.currentTarget));
 
-//SHOW A LIST THAT SHOW ALL DISPO WORKERS FOR A SPECIFIC SALL
-function SHOW_SALL_WORKERS(sall) {
+    function ADD_EXPERIENCE_INPUTS_EVENT(item) {
+        const CLONED_INPUTS = item.closest(".Experience").cloneNode(true);
+        CLONED_INPUTS.querySelector('button.delete_button').classList.remove('hidden');
+        CLONED_INPUTS.querySelector('button.add_button').addEventListener('click', (e) => ADD_EXPERIENCE_INPUTS_EVENT(e.currentTarget))
+        CLONED_INPUTS.querySelector('button.delete_button').addEventListener('click', (e) => { e.currentTarget.closest(".Experience").remove() })
+        FORM.querySelector('#Expériences_container').appendChild(CLONED_INPUTS);
+    }
 
-    ZONE_WORKER_LIST.innerHTML = '';
-    const FILTRED_ARRAY = Array.from(WORKERS_LIST.querySelectorAll('div[id]')).filter((item) => ROOLES[sall.id].employees.includes(item.querySelector('.post').textContent));
+    LAYER.addEventListener('click', () => {
 
-    //FILL THE ZONE_WORKER_LIST
-    FILTRED_ARRAY.forEach(item => {
-        const CLONE = item.cloneNode(true)
-        ZONE_WORKER_LIST.appendChild(CLONE);
+        // CONTROLE FORM , ZONE_WORKER_LIST & WORKER PROFILE
+        FORM.classList.contains('active') && DISPLAY_ITEM(FORM);
+        ZONE_WORKER_LIST.parentElement.classList.contains('active') && DISPLAY_ITEM(ZONE_WORKER_LIST.parentElement);
+
+        if (document.querySelector('.profaile')) {
+            LAYER.classList.add('hidden');
+            document.querySelector('.profaile').remove();
+        }
+
     });
 
-    Array.from(ZONE_WORKER_LIST.children).forEach(item => {
+    //ADD EVENT LISTINER TO EACH BUTTON IN AREA
+    SALLES.querySelectorAll('section button').forEach(item => {
         item.addEventListener('click', () => {
-            if (sall.querySelector('.worker_container').childElementCount < ROOLES[sall.id].limits) {
-                ADD_WORKER_TO_AREA(sall , item)
-            }
-        });
-    })
+            if (!WORKERS_LIST.childElementCount) return DISPLAY_TOST('red', 'there is no disponible worker')
+            SHOW_SALL_WORKERS(item.parentElement);
+        })
+    });
 
 }
 
-function ADD_WORKER_TO_AREA(sall , worker){
+function DISPLAY_SAL_WORKERS() {
+
+    //FILL ROOMS FROM SAVED WORKER
+    SALLES.querySelectorAll('section[id]').forEach((container) => {
+
+        BASE_DATA[container.id].forEach(item => {
+            const WORKER = document.createElement('div');
+            WORKER.setAttribute('draggable', true);
+            WORKER.setAttribute('id', item.id);
+
+            WORKER.className = 'area_worker worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-[#5E936C] text-white font-medium rounded-[5px] p-[10px]'
+            WORKER.innerHTML = `
+                <img src="${item.image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">${item.name}</p>
+                    <p class="post md:text-start text-center">${item.specialite}</p>
+                </div>
+                <button class="hidden">&times;</button>
+                    ` ;
+
+            container.querySelector('section').appendChild(WORKER);
+            WORKER.addEventListener('click', () => SHOW_PROFILE(container, WORKER));
+
+
+        })
+    });
+}
+
+function ADD_WORKER_TO_AREA(sall, worker) {
+
+    //DISPLAY WORKER PROFILE EVENT
+    worker.addEventListener('click', () => SHOW_PROFILE(sall, worker));
 
     //ADD WORKER TO AREA
-    worker.classList.add('area_worker')
     sall.querySelector('.worker_container').appendChild(worker);
+    worker.classList.add('area_worker')
+    worker.classList.remove('disponible')
 
     //REMOVE WORKER FROM WORKER LIST
-    DATA = DATA.filter(item=> DATA.indexOf(item) != worker.id) ;
-    DISPLAY_WORKERS(DATA) ;
+    DATA = DATA.filter(item => item.id != worker.id);
+
+    //SAVE WORKERS LIST AND SALL WORKERS IN LOCAL STORAGE 
+    CHANGE_LOCAL_STORAGE(sall.id, [...BASE_DATA[sall.id], BASE_DATA['workers'].find(item => item.id == worker.id)]);
+    CHANGE_LOCAL_STORAGE('workers', DATA)
+
+    DISPLAY_WORKERS(DATA);
 
 }
 
-function DISPLAY_FORM() {
-    FORM.classList.toggle('hidden');
+function CREATE_WORKER(data) {
+
+
+    const WORKER = document.createElement('div');
+    WORKER.setAttribute('draggable', true);
+    WORKER.setAttribute('id', data.id);
+    console.log(DATA);
+
+       WORKER.className = 'disponible worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-[#5E936C] text-white font-medium rounded-[5px] p-[10px]'
+    WORKER.innerHTML = `
+                <img src="${data.image}" alt="" class= "w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">${data.name}</p>
+                    <p class="post md:text-start text-center">${data.specialite}</p>
+                </div>
+                <button class="hidden">&times;</button>
+                    ` ;
+
+
+    WORKERS_LIST.appendChild(WORKER);
+
+    DISPLAY_TOST('green', 'worker addes with success');
+    WORKER.addEventListener('click', () => SHOW_PROFILE({ id: 'workers' }, WORKER));
+
+}
+
+function CHANGE_LOCAL_STORAGE(key, array) {
+    // const x = {...BASE_DATA , [BASE_DATA[key]] : array}
+    // localStorage.setItem('workers', JSON.stringify(array))
+    BASE_DATA[key] = array;
+    console.log(BASE_DATA);
+    localStorage.setItem('workers', JSON.stringify(BASE_DATA));
+}
+
+function DISPLAY_ITEM(item) {
+    //FUNCTION THAT SHOW OR REMOVE A MODAL LIKE FORM , PROFAIL  
+    item.classList.toggle('active');
+    item.classList.toggle('hidden');
     LAYER.classList.toggle('hidden');
 }
 
-function DISPLAY_TOST(color, message) {
-    console.log('color : ', color, 'messahe : ', message)
-}
+function DISPLAY_WORKERS(array) {
 
-function CHANGE_LOCAL_STORAGE(array) {
-    localStorage.setItem('workers', JSON.stringify(array))
-}
+    WORKERS_LIST.innerHTML = '';
 
-//INDICATE THAT FORM DATA IS INVALIDE
-function INVALID_DATA(message, invalid_input) {
-    invalid_input.style.border = '3px solid red'
-    DISPLAY_TOST('red', message);
-    return;
-}
+    for (let i = 0; i < array.length; i++) {
+        const WORKER = document.createElement('div');
+        WORKER.setAttribute('draggable', true);
+        WORKER.setAttribute('id', array[i].id);
+        WORKER.className = 'disponible worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-[#5E936C] text-white font-medium rounded-[5px] p-[10px]'
 
-//INDICATE THAT FORM DATA IS VALID
-function SUBMIT_VALID_DATA(data) {
+        WORKER.innerHTML = `
+                <img src="${array[i].image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
+                <div>
+                    <p class="name md:text-start text-center">${array[i].name}</p>
+                    <p class="post md:text-start text-center">${array[i].specialite}</p>
+                </div>
+                <button class="hidden absolute sm:static md:absolute right-[15px]">&times;</button>
+
+                    ` ;
+
+        WORKER.addEventListener('click', () => SHOW_PROFILE({ id: 'workers' }, WORKER));
+        WORKERS_LIST.appendChild(WORKER);
 
 
-    for (let i = 0; i < FORM.length; i++) {
-        FORM[i].style.border = 'none';
     }
 
+}
 
-    DISPLAY_TOST('green', 'worker is created successfuly');
-
+function DISPLAY_TOST(color, message) {
+    const TOAST = document.createElement('div');
+    TOAST.className = `w-fill h-[50px] flex items-center rounded-[5px] p-[5px] text-white flex-shrink-0 bg-[${color}]`
+    TOAST.textContent = message;
+    TOAST_CONTAINER.appendChild(TOAST);
+    setTimeout(() => {
+        TOAST.remove();
+    }, 2000)
+    // console.log('color : ', color, 'messahe : ', message)
 }
 
 function HANDLESUBMIT(e) {
@@ -111,7 +204,111 @@ function HANDLESUBMIT(e) {
     DATA.push({ ...FORM_DATA, "Experiences": EXPERIENCE });
 
     CREATE_WORKER({ ...FORM_DATA, "Experiences": EXPERIENCE });
-    CHANGE_LOCAL_STORAGE(DATA)
+    CHANGE_LOCAL_STORAGE('workers', DATA);
+    FORM.reset();
+
+}
+
+//INDICATE THAT FORM DATA IS INVALIDE
+function INVALID_DATA(message, invalid_input) {
+    invalid_input.style.border = '3px solid red'
+    DISPLAY_TOST('red', message);
+}
+
+function REMOVE_WORKER_FROM_AREA(sall, worker) {
+    DATA.push(BASE_DATA[sall.id].find(item => item.id == worker.id));
+    worker.classList.add('disponible');
+    worker.classList.remove('area_worker');
+    WORKERS_LIST.appendChild(worker);
+
+    CHANGE_LOCAL_STORAGE(sall.id, [...BASE_DATA[sall.id].filter(item => item.id != worker.id)]);
+    CHANGE_LOCAL_STORAGE('workers', DATA)
+
+}
+
+//SHOW A LIST THAT SHOW ALL DISPO WORKERS FOR A SPECIFIC SALL
+function SHOW_SALL_WORKERS(sall) {
+
+    ZONE_WORKER_LIST.innerHTML = '';
+    const WORKERS_LIST_ITEMS = Array.from(WORKERS_LIST.querySelectorAll('div[id]'));
+
+    const FILTRED_ARRAY = WORKERS_LIST_ITEMS.filter((item) => ROOLES[sall.id].employees.includes(DATA.find(obj => obj.id == item.id).specialite));
+    if (!FILTRED_ARRAY.length) return DISPLAY_TOST('red', 'there is no disponible worker for this area');
+    document.getElementById('close_zone_workers_list').parentElement.classList.remove('hidden');
+
+    //FILL THE ZONE_WORKER_LIST
+    FILTRED_ARRAY.forEach(item => {
+        const CLONE = item.cloneNode(true);
+        ZONE_WORKER_LIST.appendChild(CLONE);
+    });
+
+    //SHOW LIST AFTER FILL IT 
+    if (ZONE_WORKER_LIST.childElementCount) {
+
+        ZONE_WORKER_LIST.parentElement.classList.add('active');
+        LAYER.classList.remove('hidden')
+
+        Array.from(ZONE_WORKER_LIST.children).forEach(item => {
+            item.addEventListener('click', () => {
+                if (sall.querySelector('.worker_container').childElementCount < ROOLES[sall.id].limits && item.classList.contains('disponible')) {
+                    ADD_WORKER_TO_AREA(sall, item);
+                    if (!ZONE_WORKER_LIST.childElementCount) {
+                        DISPLAY_ITEM(ZONE_WORKER_LIST.parentElement)
+                    }
+                }
+            })
+        });
+    }
+}
+
+function SHOW_PROFILE(sall, worker) {
+
+
+    LAYER.classList.remove('hidden');
+
+    function HIDE_PROFILE() {
+        LAYER.classList.add('hidden');
+        DIV.remove();
+    }
+
+    //IF A WORKER REMOVED FROM A SALL LAITLY . SHOW PROFILE EVENT KEEPS THE OLD INFO 'SALL'  
+    const WORKER_INFO = BASE_DATA[worker.classList.contains('disponible') ? 'workers' : sall.id].find(item => item.id == worker.id);
+
+    const DIV = document.createElement('div');
+    DIV.className = 'profaile active absolute bg-[#5E936C] top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] rounded-[10px] flex z-10 min-w-fit';
+    DIV.innerHTML = ` 
+        <button  class="absolute top-[-15px] right-[-15px] cursor-pointer w-[30px] h-[30px] bg-red-500 rounded-[100000px] z-2 flex items-center justify-center text-white">&times;</button>
+        <div class="flex flex-col items-center gap-[5px] p-[5%] w-fit">
+            <img src = '${WORKER_INFO.image}' class="w-[40%] aspect-square rounded-full bg-center" alt = 'worker profail image' >
+            <p class="w-fit text-[#2a402e] font-bold"> ${WORKER_INFO.name} </p>
+            <p class="w-fit text-[#2a402e] font-bold"> ${WORKER_INFO.specialite} </p>
+            <p class="w-fit text-[#2a402e] font-bold"> ${WORKER_INFO.email} </p>
+            <p class="w-fit text-[#2a402e] font-bold"> ${WORKER_INFO.phone} </p>
+            <p class="w-fit text-[#2a402e] font-bold"> ${sall.id} </p>
+            ${worker.classList.contains('area_worker') ? '<button class="bg-red-500 rounded-[5px] p-[5px] px-[20px] cursor-pointer text-white font-bold" title="remove this worker from this area back to list">remove</button>' : ''}
+            </div>
+
+        </div>
+        
+        <div class="flex flex-col overflow-auto p-[5px] min-w-fit w-[35vw]"> 
+        ${WORKER_INFO.Experiences.map(item =>
+        `<div class="Experience flex flex-col bg-green-100 w-full p-[10px] rounded-[5px]">
+                <p class='w-max'>${item.experience}</p>
+                <p class='w-max'>${item.role}</p>
+                <p class='w-max'>from ${new Date(item.from).toDateString()}</p>
+                <p>to ${new Date(item.to).toDateString()}</p>
+            </div>`).join("</br>")}
+        </div>
+
+         ` ;
+    DIV.querySelector('button:first-child').addEventListener('click', HIDE_PROFILE);
+    if (DIV.querySelector('button:last-child')) {
+        DIV.querySelector('button:last-child').addEventListener('click', () => {
+            HIDE_PROFILE();
+            REMOVE_WORKER_FROM_AREA(sall, worker);
+        });
+    }
+    document.body.appendChild(DIV);
 }
 
 //VALIDATE SUBMITED DATA
@@ -144,7 +341,8 @@ function VALIDATION_FROM_DATA() {
         }
     }
 
-    if (!image.value) data.data.image = 'default.jpg';
+    if (!image.value) data.data.image = 'img/default.jpg';
+
 
     for (key in data.data) {
         const value = data.data[key]
@@ -155,6 +353,7 @@ function VALIDATION_FROM_DATA() {
         }
     }
 
+    data.data.id = Date.now();
     return data.data
 
 
@@ -209,72 +408,20 @@ function VALIDATION_EXPERIENCES_DATA() {
     return Experiences;
 }
 
-function CREATE_WORKER(data) {
-
-    const WORKER = document.createElement('div');
-    WORKER.setAttribute('draggable', true);
-
-    // IF THERE IS NO ID IN DATA , SOW WORKER IS THE FIRST ONE
-    // ID WILL BE THE INDEX OF THE WORKER INSIDE THE ARRAY
-
-    const id = WORKERS_LIST.querySelector('div:last-child').getAttribute('id');
-    WORKER.setAttribute('id', id ? +id + 1 : 0);
-    console.log(DATA);
-
-    WORKER.className = 'worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-red-200 rounded-[5px] p-[10px]'
-    WORKER.innerHTML = `
-                <img src="${data.image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
-                <div>
-                    <p class="name md:text-start text-center">${data.name}</p>
-                    <p class="post md:text-start text-center">${data.specialite}</p>
-                </div>
-                <button class="absolute sm:static md:absolute right-[15px]">&times;</button>
-                    ` ;
-
-    WORKERS_LIST.appendChild(WORKER);
-
-    DISPLAY_TOST('green', 'worker addes with success');
-    WORKER.addEventListener('click', () => SHOW_WORKER_DATA(data));
-
-}
-
-function DISPLAY_WORKERS(array) {
-
-    WORKERS_LIST.innerHTML = '';
-
-    for (let i = 0; i < array.length; i++) {
-        const WORKER = document.createElement('div');
-        WORKER.setAttribute('draggable', true);
-
-        // IF THERE IS NO ID IN array , SOW WORKER IS THE FIRST ONE
-        // ID WILL BE THE INDEX OF THE WORKER INSIDE THE ARRAY
-        let id = 0
-        if (document.querySelector('#workers_list > div:last-child')) {
-            id = + document.querySelector('#workers_list > div:last-child').getAttribute('id') + 1
-        }
-        WORKER.setAttribute('id', id);
-        WORKER.className = 'worker relative flex gap-[15px] md:flex-col lg:flex-row items-center w-full lg:w-full md:w-fit min-w-[180px] h-fit bg-red-200 rounded-[5px] p-[10px]'
-        WORKER.innerHTML = `
-                <img src="${array[i].image}" alt="" class="w-[45px] aspect-[1/1] bg-red-200  object-cover rounded-full">
-                <div>
-                    <p class="name md:text-start text-center">${array[i].name}</p>
-                    <p class="post md:text-start text-center">${array[i].specialite}</p>
-                </div>
-                <button class="hidden absolute sm:static md:absolute right-[15px]">&times;</button>
-
-                    ` ;
-
-        WORKERS_LIST.appendChild(WORKER);
-
-    }
-
-}
-
-function SHOW_WORKER_DATA(data) {
-    return;
-}
+let DATA = [...BASE_DATA.workers];
+EVENT_LISTINERS()
+DISPLAY_WORKERS(BASE_DATA.workers)
+DISPLAY_SAL_WORKERS()
 
 
 
+//COLORE
+// 3E5F44
+// 5E936C
+// 93DA97
+// E8FFD7
 
-DISPLAY_WORKERS(DATA)
+// 2a402e
+
+
+// 	https://pngimg.com/uploads/free/small/free_PNG90771.png
