@@ -1,6 +1,3 @@
-//SHOW_PROFAILE
-
-
 
 //FETCH DATA FROM LOCAL STORAGE
 const BASE_DATA = localStorage.getItem('workers') ? JSON.parse(localStorage.getItem('workers')) : { workers: [], Reception: [], salle_conference: [], salle_serveurs: [], salle_securite: [], salle_personnel: [], salle_archives: [] };
@@ -412,16 +409,6 @@ let DATA = [...BASE_DATA.workers];
 EVENT_LISTINERS()
 DISPLAY_WORKERS(BASE_DATA.workers)
 DISPLAY_SAL_WORKERS()
-
-
-
-//COLORE
-// 3E5F44
-// 5E936C
-// 93DA97
-// E8FFD7
-
-// 2a402e
 
 
 // 	https://pngimg.com/uploads/free/small/free_PNG90771.png
