@@ -7,11 +7,11 @@
 ::-webkit-scrollbar{
     width: 5px;
     height: 10px;
-    background: red;
+    background-color: #E8FFD7;
 }
 
 ::-webkit-scrollbar-thumb{
-    background-color: rgb(4, 65, 199);
+    background: #3E5F44;
     border-radius: 2px;
 }
 
